@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Life Hack Agency | Websites & Apps for Small Business</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Basic SEO -->
+  <meta name="description" content="Life Hack Agency builds top-tier websites and apps for small businesses at a fraction of big-agency pricing. Faster turnaround, pro results. Book a call today." />
+  <meta name="keywords" content="Life Hack Agency, website builder, app builder, small business websites, affordable web design, fast website development, mobile apps" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a; /* deep navy */
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid #1f2937;
+      backdrop-filter: blur(8px);
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+    }
+
+    .logo span {
+      color: #fde047; /* accent */
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      opacity: 0.9;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 600;
+      background: #2563eb;
+      color: #f9fafb;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+      text-align: center;
+      font-size: 0.95rem;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 0.65rem 1.2rem;
+      border-radius: 999px;
+      font-weight: 500;
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #4b5563;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-outline:hover {
+      border-color: #9ca3af;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 3.5rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #bfdbfe;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.3rem, 3vw, 3rem);
+      margin-bottom: 0.8rem;
+    }
+
+    .hero h1 span {
+      color: #fde047;
+    }
+
+    .hero-sub {
+      color: #9ca3af;
+      font-size: 0.98rem;
+      max-width: 34rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-note {
+      font-size: 0.82rem;
+      color: #9ca3af;
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top left, #1d4ed8 0, #020617 55%);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-card p {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-card ul {
+      list-style: none;
+      font-size: 0.88rem;
+      color: #e5e7eb;
+    }
+
+    .hero-card ul li::before {
+      content: "• ";
+      color: #fde047;
+    }
+
+    /* Sections */
+    section {
+      padding: 3rem 0;
+      border-top: 1px solid #111827;
+    }
+
+    section:nth-of-type(even) {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #000 100%);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      color: #9ca3af;
+      font-size: 0.95rem;
+      max-width: 36rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      gap: 1.75rem;
+    }
+
+    @media (min-width: 880px) {
+      .pricing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .pricing-card {
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      background: #020617;
+      border: 1px solid #111827;
+    }
+
+    .pricing-card.popular {
+      border: 1px solid #2563eb;
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.25);
+    }
+
+    .pricing-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #9ca3af;
+      margin-bottom: 0.4rem;
+    }
+
+    .pricing-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .pricing-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .pricing-note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 0.8rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      font-size: 0.86rem;
+      color: #d1d5db;
+    }
+
+    .pricing-features li {
+      margin-bottom: 0.4rem;
+    }
+
+    .pricing-features li::before {
+      content: "✓ ";
+      color: #22c55e;
+    }
+
+    /* Process */
+    .steps {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 720px) {
+      .steps {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .step {
+      border-radius: 1rem;
+      padding: 1rem;
+      background: #020617;
+      border: 1px solid #111827;
+      font-size: 0.9rem;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      background: #2563eb;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .step p {
+      color: #9ca3af;
+      font-size: 0.84rem;
+    }
+
+    /* Contact / Intake */
+    .contact-grid {
+      display: grid;
+      gap: 1.75rem;
+    }
+
+    @media (min-width: 880px) {
+      .contact-grid {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr);
+      }
+    }
+
+    .contact-card {
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      background: #020617;
+      border: 1px solid #111827;
+      font-size: 0.9rem;
+    }
+
+    .contact-card h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-card p {
+      margin-bottom: 0.5rem;
+      color: #d1d5db;
+    }
+
+    .contact-details {
+      font-size: 0.88rem;
+      margin-top: 0.5rem;
+    }
+
+    .contact-details div {
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-details span {
+      color: #9ca3af;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 0.3rem;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    input, textarea {
+      padding: 0.6rem 0.75rem;
+      border-radius: 0.6rem;
+      border: 1px solid #1f2937;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #2563eb;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-helper {
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+
+    footer {
+      border-top: 1px solid #111827;
+      padding: 1.8rem 0 2.2rem;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-top: 2.5rem;
+      }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">
+        Life Hack <span>Agency</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#pricing">Pricing</a>
+        <a href="#process">How It Works</a>
+        <a href="#contact">Book a Call</a>
+      </nav>
+      <a href="#contact" class="btn-outline">Free Strategy Call</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-badge">
+            <span></span>
+            Top-tier websites & apps for a fraction of big-agency prices
+          </div>
+          <h1>
+            Top-Tier <span>Websites & Apps</span><br />
+            Without the Big-Agency Price Tag
+          </h1>
+          <p class="hero-sub">
+            Life Hack Agency builds professional, high-converting websites and apps for small businesses. 
+            Typical agencies charge <strong>$3,000–$5,000+</strong>. Our core builds start at <strong>$999.99</strong> with faster turnaround and the same high-quality results.
+          </p>
+
+          <div class="hero-cta">
+            <a href="#contact" class="btn-primary">Book a Free Strategy Call</a>
+            <a href="tel:+16828889241" class="btn-outline">Call (682) 888-9241</a>
+          </div>
+
+          <p class="hero-note">
+            No pressure. No tech talk. Just a simple phone call to see what you need, then we email you a quick intake form to get started.
+          </p>
+        </div>
+
+        <aside class="hero-card">
+          <h2>Why We’re Cheaper & Faster</h2>
+          <p>
+            We keep things lean: no huge office, no bloated team, no unnecessary meetings. 
+            That means you get:
+          </p>
+          <ul>
+            <li>Custom, modern design tailored to your business</li>
+            <li>Fast build times (days, not months)</li>
+            <li>Clear, flat-rate pricing — no surprises</li>
+            <li>Direct phone support with your builder</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="container">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-sub">
+          Pay a fraction of what big agencies charge and still get clean, professional, conversion-focused builds. 
+          Every project starts with a free phone consultation and a short intake form emailed to you.
+        </p>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-label">Web Package</div>
+            <div class="pricing-name">Launch Website</div>
+            <div class="pricing-price">$999.99</div>
+            <div class="pricing-note">Perfect for small businesses who need a clean, modern site fast.</div>
+            <ul class="pricing-features">
+              <li>Up to 5 custom pages (Home, About, Services, Contact, etc.)</li>
+              <li>Mobile-friendly, fast-loading design</li>
+              <li>Basic SEO setup (titles, descriptions, keywords)</li>
+              <li>Contact form & call-to-action buttons</li>
+              <li>Email intake form after phone call to gather your details</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card popular">
+            <div class="pricing-label">Most Popular</div>
+            <div class="pricing-name">Growth Website</div>
+            <div class="pricing-price">$1,499.99</div>
+            <div class="pricing-note">For businesses ready to grow and look like a “big player” online.</div>
+            <ul class="pricing-features">
+              <li>Up to 10 custom pages & landing page layout</li>
+              <li>Enhanced SEO structure & blog setup (optional)</li>
+              <li>Lead capture forms & basic automations</li>
+              <li>Integration with your booking or calendar tools</li>
+              <li>Phone consult + emailed intake form & content checklist</li>
+            </ul>
+          </div>
+
+          <div class="pricing-card">
+            <div class="pricing-label">Apps</div>
+            <div class="pricing-name">App Prototype / MVP</div>
+            <div class="pricing-price">From $2,499</div>
+            <div class="pricing-note">Bring your app idea to life with a simple, working version.</div>
+            <ul class="pricing-features">
+              <li>Discovery call to map your app idea</li>
+              <li>Clickable prototype or basic live MVP</li>
+              <li>Simple user flows & core features only</li>
+              <li>Hand-off or ongoing upgrade options</li>
+              <li>All specs collected through a detailed intake form</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="hero-note" style="margin-top:1.5rem;">
+          Need something different? Custom quotes are available after a quick call. 
+          <strong>Big agencies:</strong> $3,000–$5,000+. 
+          <strong>Life Hack Agency:</strong> same professional look, faster, at a fraction of the price.
+        </p>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+      <div class="container">
+        <h2 class="section-title">How the Process Works (Simple)</h2>
+        <p class="section-sub">
+          No complicated project portals or endless meetings. Just a call, a simple intake form, and then we build.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Book a Free Call</div>
+            <p>
+              Call us or use the contact form below to request a quick over-the-phone appointment.
+              We talk through your goals and pick the right package.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Intake Form by Email</div>
+            <p>
+              After your call, we email you a simple intake form. You fill in your business details, 
+              services, colors, and any examples you like, then email it back.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">We Build & Show You</div>
+            <p>
+              We design and build your site or app based on your intake form, then send you a preview.
+              You can request a round of clean-up edits.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Launch & Handover</div>
+            <p>
+              Once you’re happy, we launch your project and hand over logins and basic instructions so you’re in control.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / INTAKE -->
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Book Your Over-the-Phone Appointment</h2>
+        <p class="section-sub">
+          Fill out this quick contact section or call directly. We’ll schedule a phone appointment and then send your intake form by email. 
+          Just complete it and email it back — we handle the rest.
+        </p>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Contact & Location</h3>
+            <p>
+              Life Hack Agency is a small, focused studio — you always deal directly with the person building your project.
+            </p>
+            <div class="contact-details">
+              <div>
+                <span>Address</span>
+                8500 Harwood Rd, Apt 6718<br />
+                North Richland Hills, TX 76180
+              </div>
+              <div>
+                <span>Phone</span>
+                <a href="tel:+16828889241">(682) 888-9241</a>
+              </div>
+              <div>
+                <span>Email</span>
+                <a href="mailto:StaytonCoryJoseph@gmail.com">StaytonCoryJoseph@gmail.com</a>
+              </div>
+              <div>
+                <span>Service</span>
+                Websites & apps for small businesses, local & remote.
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <h3>Request a Call & Intake Form</h3>
+            <p>
+              This form doesn’t submit on the page yet — it’s here to show the simple info we’ll collect. 
+              You can copy/paste these questions into an email, or we can send you this as a completed intake form after your call.
+            </p>
+
+            <div class="contact-form">
+              <div class="field">
+                <label for="name">Your Name</label>
+                <input id="name" type="text" placeholder="Full name" />
+              </div>
+              <div class="field">
+                <label for="business">Business Name</label>
+                <input id="business" type="text" placeholder="What is your business called?" />
+              </div>
+              <div class="field">
+                <label for="phone">Best Phone Number</label>
+                <input id="phone" type="tel" placeholder="Where can we call you?" />
+              </div>
+              <div class="field">
+                <label for="email">Best Email</label>
+                <input id="email" type="email" placeholder="Where should we send your intake form?" />
+              </div>
+              <div class="field">
+                <label for="project">What do you need?</label>
+                <textarea id="project" placeholder="Example: 5-page website for my local business, or basic app for booking clients."></textarea>
+              </div>
+              <p class="form-helper">
+                To get started now, you can email this information directly to 
+                <a href="mailto:StaytonCoryJoseph@gmail.com">StaytonCoryJoseph@gmail.com</a> 
+                with the subject line: <strong>“Life Hack Agency Intake Form”</strong>.
+              </p>
+              <div>
+                <a href="mailto:StaytonCoryJoseph@gmail.com?subject=Life%20Hack%20Agency%20Intake%20Form" class="btn-primary">
+                  Email My Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Life Hack Agency. All rights reserved. Built for small businesses who want
+    top-tier results without top-tier prices.
+  </footer>
+
+  <script>
+    // Dynamic year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
