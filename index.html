@@ -6,8 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Basic SEO -->
-  <meta name="description" content="Life Hack Agency builds top-tier websites and apps for small businesses at a fraction of big-agency pricing. Faster turnaround, pro results. Book a call today." />
-  <meta name="keywords" content="Life Hack Agency, website builder, app builder, small business websites, affordable web design, fast website development, mobile apps" />
+  <meta
+    name="description"
+    content="Life Hack Agency builds top-tier websites and apps for small businesses at a fraction of big-agency pricing. Faster turnaround, pro results. Book a call today."
+  />
+  <meta
+    name="keywords"
+    content="Life Hack Agency, website builder, app builder, small business websites, affordable web design, fast website development, mobile apps"
+  />
 
   <style>
     * {
@@ -16,10 +22,21 @@
       padding: 0;
     }
 
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #020617;
+      --border-subtle: #111827;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent-blue: #2563eb;
+      --accent-gold: #fde047;
+      --accent-green: #22c55e;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a; /* deep navy */
-      color: #e5e7eb;
+      background: var(--bg-main);
+      color: var(--text-main);
       line-height: 1.6;
     }
 
@@ -32,9 +49,9 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.96);
       border-bottom: 1px solid #1f2937;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
 
     .container {
@@ -48,16 +65,30 @@
       align-items: center;
       justify-content: space-between;
       padding: 1rem 0;
+      gap: 1rem;
     }
 
     .logo {
       font-weight: 800;
       font-size: 1.3rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .logo span {
-      color: #fde047; /* accent */
+      color: var(--accent-gold);
+    }
+
+    .logo-pill {
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #334155;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .nav-links {
@@ -79,7 +110,7 @@
       padding: 0.75rem 1.4rem;
       border-radius: 999px;
       font-weight: 600;
-      background: #2563eb;
+      background: var(--accent-blue);
       color: #f9fafb;
       border: none;
       cursor: pointer;
@@ -87,6 +118,7 @@
       text-align: center;
       font-size: 0.95rem;
       box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+      white-space: nowrap;
     }
 
     .btn-primary:hover {
@@ -96,7 +128,9 @@
     }
 
     .btn-outline {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       padding: 0.65rem 1.2rem;
       border-radius: 999px;
       font-weight: 500;
@@ -105,6 +139,7 @@
       border: 1px solid #4b5563;
       cursor: pointer;
       font-size: 0.9rem;
+      white-space: nowrap;
     }
 
     .btn-outline:hover {
@@ -140,7 +175,7 @@
       width: 6px;
       height: 6px;
       border-radius: 999px;
-      background: #22c55e;
+      background: var(--accent-green);
     }
 
     .hero h1 {
@@ -149,11 +184,11 @@
     }
 
     .hero h1 span {
-      color: #fde047;
+      color: var(--accent-gold);
     }
 
     .hero-sub {
-      color: #9ca3af;
+      color: var(--text-muted);
       font-size: 0.98rem;
       max-width: 34rem;
       margin-bottom: 1.8rem;
@@ -169,7 +204,7 @@
 
     .hero-note {
       font-size: 0.82rem;
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
     .hero-card {
@@ -199,13 +234,49 @@
 
     .hero-card ul li::before {
       content: "• ";
-      color: #fde047;
+      color: var(--accent-gold);
+    }
+
+    /* Cred / industries strip */
+    .cred-strip {
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.9rem 0;
+      background: radial-gradient(circle at top, #020617 0, #020617 35%, #000 100%);
+    }
+
+    .cred-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .cred-inner strong {
+      color: var(--text-main);
+    }
+
+    .cred-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.76rem;
+    }
+
+    .cred-tag {
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      background: #020617;
     }
 
     /* Sections */
     section {
       padding: 3rem 0;
-      border-top: 1px solid #111827;
+      border-top: 1px solid var(--border-subtle);
     }
 
     section:nth-of-type(even) {
@@ -218,7 +289,7 @@
     }
 
     .section-sub {
-      color: #9ca3af;
+      color: var(--text-muted);
       font-size: 0.95rem;
       max-width: 36rem;
       margin-bottom: 2rem;
@@ -239,20 +310,36 @@
     .pricing-card {
       border-radius: 1.25rem;
       padding: 1.5rem;
-      background: #020617;
-      border: 1px solid #111827;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
     }
 
     .pricing-card.popular {
-      border: 1px solid #2563eb;
+      border: 1px solid var(--accent-blue);
       box-shadow: 0 18px 40px rgba(37, 99, 235, 0.25);
+      position: relative;
+    }
+
+    .pricing-card.popular::before {
+      content: "Best Value";
+      position: absolute;
+      top: 0.9rem;
+      right: 1rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.15);
+      color: #bfdbfe;
+      border: 1px solid #1d4ed8;
     }
 
     .pricing-label {
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.09em;
-      color: #9ca3af;
+      color: var(--text-muted);
       margin-bottom: 0.4rem;
     }
 
@@ -269,7 +356,7 @@
 
     .pricing-note {
       font-size: 0.8rem;
-      color: #9ca3af;
+      color: var(--text-muted);
       margin-bottom: 0.8rem;
     }
 
@@ -285,7 +372,40 @@
 
     .pricing-features li::before {
       content: "✓ ";
-      color: #22c55e;
+      color: var(--accent-green);
+    }
+
+    /* Why us strip */
+    .why-strip {
+      margin-top: 2.25rem;
+      border-radius: 1.1rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid #1f2937;
+      background: linear-gradient(90deg, #020617, #020617 40%, #111827 100%);
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .why-strip strong {
+      color: #f9fafb;
+    }
+
+    .why-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .why-pill {
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #374151;
     }
 
     /* Process */
@@ -303,8 +423,8 @@
     .step {
       border-radius: 1rem;
       padding: 1rem;
-      background: #020617;
-      border: 1px solid #111827;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       font-size: 0.9rem;
     }
 
@@ -315,7 +435,7 @@
       width: 1.6rem;
       height: 1.6rem;
       border-radius: 50%;
-      background: #2563eb;
+      background: var(--accent-blue);
       font-size: 0.8rem;
       font-weight: 700;
       margin-bottom: 0.4rem;
@@ -327,7 +447,7 @@
     }
 
     .step p {
-      color: #9ca3af;
+      color: var(--text-muted);
       font-size: 0.84rem;
     }
 
@@ -346,8 +466,8 @@
     .contact-card {
       border-radius: 1.25rem;
       padding: 1.5rem;
-      background: #020617;
-      border: 1px solid #111827;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       font-size: 0.9rem;
     }
 
@@ -370,7 +490,7 @@
     }
 
     .contact-details span {
-      color: #9ca3af;
+      color: var(--text-muted);
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -391,10 +511,11 @@
 
     label {
       font-size: 0.8rem;
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
-    input, textarea {
+    input,
+    textarea {
       padding: 0.6rem 0.75rem;
       border-radius: 0.6rem;
       border: 1px solid #1f2937;
@@ -404,8 +525,9 @@
       outline: none;
     }
 
-    input:focus, textarea:focus {
-      border-color: #2563eb;
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent-blue);
     }
 
     textarea {
@@ -415,11 +537,11 @@
 
     .form-helper {
       font-size: 0.75rem;
-      color: #9ca3af;
+      color: var(--text-muted);
     }
 
     footer {
-      border-top: 1px solid #111827;
+      border-top: 1px solid var(--border-subtle);
       padding: 1.8rem 0 2.2rem;
       font-size: 0.8rem;
       color: #6b7280;
@@ -446,6 +568,7 @@
     <div class="container nav">
       <div class="logo">
         Life Hack <span>Agency</span>
+        <span class="logo-pill">Websites & Apps</span>
       </div>
       <nav class="nav-links">
         <a href="#pricing">Pricing</a>
@@ -476,29 +599,46 @@
 
           <div class="hero-cta">
             <a href="#contact" class="btn-primary">Book a Free Strategy Call</a>
-            <a href="tel:+16828889241" class="btn-outline">Call (682) 888-9241</a>
+            <a href="tel:+14694356294" class="btn-outline">Call (469) 435-6294</a>
           </div>
 
           <p class="hero-note">
-            No pressure. No tech talk. Just a simple phone call to see what you need, then we email you a quick intake form to get started.
+            No pressure. No tech talk. Just a simple phone call to see what you need. 
+            After the call we email you a short intake form — you fill it out, we build the thing.
           </p>
         </div>
 
         <aside class="hero-card">
-          <h2>Why We’re Cheaper & Faster</h2>
+          <h2>Why We’re Cheaper &amp; Faster</h2>
           <p>
-            We keep things lean: no huge office, no bloated team, no unnecessary meetings. 
+            We keep things lean: no huge office, no bloated team, no 3-week “strategy meetings.” 
             That means you get:
           </p>
           <ul>
             <li>Custom, modern design tailored to your business</li>
             <li>Fast build times (days, not months)</li>
-            <li>Clear, flat-rate pricing — no surprises</li>
-            <li>Direct phone support with your builder</li>
+            <li>Clear, flat-rate pricing — no surprise invoices</li>
+            <li>Direct phone support with your actual builder</li>
           </ul>
         </aside>
       </div>
     </section>
+
+    <!-- CRED STRIP -->
+    <div class="cred-strip">
+      <div class="container cred-inner">
+        <div>
+          <strong>Built for real small businesses.</strong> Local, service-based, and online brands.
+        </div>
+        <div class="cred-tags">
+          <span class="cred-tag">Contractors</span>
+          <span class="cred-tag">Real Estate</span>
+          <span class="cred-tag">Credit / Finance</span>
+          <span class="cred-tag">Beauty &amp; Wellness</span>
+          <span class="cred-tag">Local Services</span>
+        </div>
+      </div>
+    </div>
 
     <!-- PRICING -->
     <section id="pricing">
@@ -519,7 +659,7 @@
               <li>Up to 5 custom pages (Home, About, Services, Contact, etc.)</li>
               <li>Mobile-friendly, fast-loading design</li>
               <li>Basic SEO setup (titles, descriptions, keywords)</li>
-              <li>Contact form & call-to-action buttons</li>
+              <li>Contact form &amp; call-to-action buttons</li>
               <li>Email intake form after phone call to gather your details</li>
             </ul>
           </div>
@@ -528,13 +668,13 @@
             <div class="pricing-label">Most Popular</div>
             <div class="pricing-name">Growth Website</div>
             <div class="pricing-price">$1,499.99</div>
-            <div class="pricing-note">For businesses ready to grow and look like a “big player” online.</div>
+            <div class="pricing-note">For businesses ready to look and feel like a “big player” online.</div>
             <ul class="pricing-features">
-              <li>Up to 10 custom pages & landing page layout</li>
-              <li>Enhanced SEO structure & blog setup (optional)</li>
-              <li>Lead capture forms & basic automations</li>
+              <li>Up to 10 custom pages &amp; landing page layout</li>
+              <li>Enhanced SEO structure &amp; optional blog setup</li>
+              <li>Lead capture forms &amp; basic automations</li>
               <li>Integration with your booking or calendar tools</li>
-              <li>Phone consult + emailed intake form & content checklist</li>
+              <li>Phone consult + emailed intake form &amp; content checklist</li>
             </ul>
           </div>
 
@@ -546,18 +686,24 @@
             <ul class="pricing-features">
               <li>Discovery call to map your app idea</li>
               <li>Clickable prototype or basic live MVP</li>
-              <li>Simple user flows & core features only</li>
+              <li>Simple user flows &amp; core features only</li>
               <li>Hand-off or ongoing upgrade options</li>
               <li>All specs collected through a detailed intake form</li>
             </ul>
           </div>
         </div>
 
-        <p class="hero-note" style="margin-top:1.5rem;">
-          Need something different? Custom quotes are available after a quick call. 
-          <strong>Big agencies:</strong> $3,000–$5,000+. 
-          <strong>Life Hack Agency:</strong> same professional look, faster, at a fraction of the price.
-        </p>
+        <div class="why-strip">
+          <div>
+            <strong>Big agencies:</strong> $3,000–$5,000+ and months of waiting. 
+            <strong>Life Hack Agency:</strong> lean, fast, and focused on what actually makes you money.
+          </div>
+          <div class="why-points">
+            <span class="why-pill">Flat-rate pricing</span>
+            <span class="why-pill">Small-business friendly</span>
+            <span class="why-pill">Launch-ready builds</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -574,7 +720,7 @@
             <div class="step-number">1</div>
             <div class="step-title">Book a Free Call</div>
             <p>
-              Call us or use the contact form below to request a quick over-the-phone appointment.
+              Call us or use the contact section below to request a quick over-the-phone appointment.
               We talk through your goals and pick the right package.
             </p>
           </div>
@@ -590,7 +736,7 @@
 
           <div class="step">
             <div class="step-number">3</div>
-            <div class="step-title">We Build & Show You</div>
+            <div class="step-title">We Build &amp; Show You</div>
             <p>
               We design and build your site or app based on your intake form, then send you a preview.
               You can request a round of clean-up edits.
@@ -599,7 +745,7 @@
 
           <div class="step">
             <div class="step-number">4</div>
-            <div class="step-title">Launch & Handover</div>
+            <div class="step-title">Launch &amp; Handover</div>
             <p>
               Once you’re happy, we launch your project and hand over logins and basic instructions so you’re in control.
             </p>
@@ -614,12 +760,12 @@
         <h2 class="section-title">Book Your Over-the-Phone Appointment</h2>
         <p class="section-sub">
           Fill out this quick contact section or call directly. We’ll schedule a phone appointment and then send your intake form by email. 
-          Just complete it and email it back — we handle the rest.
+          Complete it and email it back — we handle the build.
         </p>
 
         <div class="contact-grid">
           <div class="contact-card">
-            <h3>Contact & Location</h3>
+            <h3>Contact &amp; Location</h3>
             <p>
               Life Hack Agency is a small, focused studio — you always deal directly with the person building your project.
             </p>
@@ -631,7 +777,7 @@
               </div>
               <div>
                 <span>Phone</span>
-                <a href="tel:+16828889241">(682) 888-9241</a>
+                <a href="tel:+14694356294">(469) 435-6294</a>
               </div>
               <div>
                 <span>Email</span>
@@ -639,13 +785,13 @@
               </div>
               <div>
                 <span>Service</span>
-                Websites & apps for small businesses, local & remote.
+                Websites &amp; apps for small businesses, local &amp; remote.
               </div>
             </div>
           </div>
 
           <div class="contact-card">
-            <h3>Request a Call & Intake Form</h3>
+            <h3>Request a Call &amp; Intake Form</h3>
             <p>
               This form doesn’t submit on the page yet — it’s here to show the simple info we’ll collect. 
               You can copy/paste these questions into an email, or we can send you this as a completed intake form after your call.
@@ -678,7 +824,10 @@
                 with the subject line: <strong>“Life Hack Agency Intake Form”</strong>.
               </p>
               <div>
-                <a href="mailto:StaytonCoryJoseph@gmail.com?subject=Life%20Hack%20Agency%20Intake%20Form" class="btn-primary">
+                <a
+                  href="mailto:StaytonCoryJoseph@gmail.com?subject=Life%20Hack%20Agency%20Intake%20Form"
+                  class="btn-primary"
+                >
                   Email My Details
                 </a>
               </div>
@@ -701,3 +850,4 @@
   </script>
 </body>
 </html>
+
