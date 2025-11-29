@@ -1,860 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Life Hack Agency | Websites & Apps for Small Business</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+// script.js
+// AI-style credit assistant for Advance Credit Solution (front-end logic only)
 
-  <!-- Basic SEO -->
-  <meta
-    name="description"
-    content="Life Hack Agency builds top-tier websites and apps for small businesses at a fraction of big-agency pricing. Faster turnaround, pro results. Book a call today."
-  />
-  <meta
-    name="keywords"
-    content="Life Hack Agency, website builder, app builder, small business websites, affordable web design, fast website development, mobile apps"
-  />
+document.addEventListener("DOMContentLoaded", () => {
+  const yearSpan = document.getElementById("year");
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+  // Mobile nav (simple)
+  const navToggle = document.querySelector(".nav-toggle");
+  const mainNav = document.querySelector(".main-nav");
+
+  if (navToggle && mainNav) {
+    navToggle.addEventListener("click", () => {
+      const isOpen = mainNav.style.display === "flex";
+      mainNav.style.display = isOpen ? "none" : "flex";
+    });
+  }
+
+  // Ask AI logic
+  const questionInput = document.getElementById("ask-ai-question");
+  const askButton = document.getElementById("ask-ai-button");
+  const answerBox = document.getElementById("ask-ai-answer");
+
+  if (!questionInput || !askButton || !answerBox) return;
+
+  function getNumber(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const value = parseFloat(el.value);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function buildAnswer(rawQuestion) {
+    const q = (rawQuestion || "").trim();
+    const lower = q.toLowerCase();
+
+    const collections = getNumber("snap-collections");
+    const chargeoffs = getNumber("snap-chargeoffs");
+    const lates = getNumber("snap-lates");
+    const repos = getNumber("snap-repos");
+    const utilization = getNumber("snap-utilization");
+    const score = getNumber("snap-score");
+
+    const tips = [];
+
+    // Intro
+    tips.push(
+      "First, breathe. Your credit is a situation, not a life sentence. We’re going to focus on the highest-impact moves instead of trying to fix everything at once."
+    );
+
+    // Collections logic
+    if (collections > 0) {
+      tips.push(
+        `You mentioned around ${collections} collection account(s). Start by pulling all three reports and listing each collection with name, balance, account number, and dates. Anything that looks wrong or duplicate gets disputed first under the Fair Credit Reporting Act.`
+      );
+      tips.push(
+        "Do not call collection agencies and make deals over the phone. Keep everything in writing so you have a paper trail and so you don’t restart old statutes accidentally."
+      );
     }
 
-    :root {
-      --bg-main: #0f172a;
-      --bg-card: #020617;
-      --border-subtle: #111827;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --accent-blue: #2563eb;
-      --accent-gold: #fde047;
-      --accent-green: #22c55e;
+    // Charge-offs
+    if (chargeoffs > 0) {
+      tips.push(
+        `You have about ${chargeoffs} charge-off(s). For each one, separate the problem into two parts: (1) Is the reporting accurate? (2) Do you want to negotiate a settlement or deletion? Fix wrong data first, then talk settlement in writing only.`
+      );
     }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg-main);
-      color: var(--text-main);
-      line-height: 1.6;
+    // Lates
+    if (lates > 0) {
+      tips.push(
+        `You estimated roughly ${lates} late payment(s) in the last 24 months. Focus on keeping everything current going forward and look closely for any late marks that don’t match your actual pay history — those are dispute candidates.`
+      );
+      tips.push(
+        "For accurate lates, you may ask the creditor for a goodwill adjustment once you’ve built a new streak of on-time payments. It’s not guaranteed, but it works often enough to try."
+      );
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    // Repos / judgments
+    if (repos > 0) {
+      tips.push(
+        `Repos/judgments: you listed about ${repos}. Get copies of any contracts or court documents so you can compare what’s reported on your credit reports against what actually happened. Anything that doesn’t match the paperwork can be challenged.`
+      );
     }
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(15, 23, 42, 0.96);
-      border-bottom: 1px solid #1f2937;
-      backdrop-filter: blur(10px);
-    }
-
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 0;
-      gap: 1rem;
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 1.3rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .logo span {
-      color: var(--accent-gold);
-    }
-
-    .logo-pill {
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid #334155;
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.95rem;
-    }
-
-    .nav-links a {
-      opacity: 0.9;
-    }
-
-    .nav-links a:hover {
-      opacity: 1;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      padding: 0.75rem 1.4rem;
-      border-radius: 999px;
-      font-weight: 600;
-      background: var(--accent-blue);
-      color: #f9fafb;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
-      text-align: center;
-      font-size: 0.95rem;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
-      white-space: nowrap;
-    }
-
-    .btn-primary:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(37, 99, 235, 0.5);
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.65rem 1.2rem;
-      border-radius: 999px;
-      font-weight: 500;
-      background: transparent;
-      color: #e5e7eb;
-      border: 1px solid #4b5563;
-      cursor: pointer;
-      font-size: 0.9rem;
-      white-space: nowrap;
-    }
-
-    .btn-outline:hover {
-      border-color: #9ca3af;
-    }
-
-    /* Hero */
-    .hero {
-      padding: 3.5rem 0 3rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.1);
-      color: #bfdbfe;
-      font-size: 0.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero-badge span {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent-green);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.3rem, 3vw, 3rem);
-      margin-bottom: 0.8rem;
-    }
-
-    .hero h1 span {
-      color: var(--accent-gold);
-    }
-
-    .hero-sub {
-      color: var(--text-muted);
-      font-size: 0.98rem;
-      max-width: 34rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .hero-cta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.9rem;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-note {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .hero-card {
-      background: radial-gradient(circle at top left, #1d4ed8 0, #020617 55%);
-      border-radius: 1.25rem;
-      padding: 1.75rem 1.5rem;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
-    }
-
-    .hero-card h2 {
-      font-size: 1.1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero-card p {
-      font-size: 0.9rem;
-      color: #e5e7eb;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero-card ul {
-      list-style: none;
-      font-size: 0.88rem;
-      color: #e5e7eb;
-    }
-
-    .hero-card ul li::before {
-      content: "• ";
-      color: var(--accent-gold);
-    }
-
-    /* Cred / industries strip */
-    .cred-strip {
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-      padding: 0.9rem 0;
-      background: radial-gradient(circle at top, #020617 0, #020617 35%, #000 100%);
-    }
-
-    .cred-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .cred-inner strong {
-      color: var(--text-main);
-    }
-
-    .cred-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      font-size: 0.76rem;
-    }
-
-    .cred-tag {
-      padding: 0.2rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid #1f2937;
-      background: #020617;
-    }
-
-    /* Sections */
-    section {
-      padding: 3rem 0;
-      border-top: 1px solid var(--border-subtle);
-    }
-
-    section:nth-of-type(even) {
-      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #000 100%);
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .section-sub {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 36rem;
-      margin-bottom: 2rem;
-    }
-
-    /* Pricing */
-    .pricing-grid {
-      display: grid;
-      gap: 1.75rem;
-    }
-
-    @media (min-width: 880px) {
-      .pricing-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    // Utilization logic
+    if (utilization > 0) {
+      if (utilization > 80) {
+        tips.push(
+          `Your utilization looks very high (around ${utilization}%). That alone can crush your score even if you never pay late. Your first rebuilding move is to create a plan to bring each card under 50%, then under 30%, and ideally into the 10–20% range.`
+        );
+      } else if (utilization > 30) {
+        tips.push(
+          `Your utilization is around ${utilization}%. Good news: this is very fixable. Aim to pay balances down below 30% per card and under about 10–15% if you’re trying to squeeze out extra points before a big purchase.`
+        );
+      } else {
+        tips.push(
+          `Your utilization (around ${utilization}%) is not the main fire. The main gains will likely come from cleaning inaccurate negatives and building positive history. Keep utilization in the low range and focus on disputes and rebuild strategy.`
+        );
       }
     }
 
-    .pricing-card {
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .pricing-card.popular {
-      border: 1px solid var(--accent-blue);
-      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.25);
-      position: relative;
-    }
-
-    .pricing-card.popular::before {
-      content: "Best Value";
-      position: absolute;
-      top: 0.9rem;
-      right: 1rem;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.18rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.15);
-      color: #bfdbfe;
-      border: 1px solid #1d4ed8;
-    }
-
-    .pricing-label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .pricing-name {
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .pricing-price {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
-
-    .pricing-note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.8rem;
-    }
-
-    .pricing-features {
-      list-style: none;
-      font-size: 0.86rem;
-      color: #d1d5db;
-    }
-
-    .pricing-features li {
-      margin-bottom: 0.4rem;
-    }
-
-    .pricing-features li::before {
-      content: "✓ ";
-      color: var(--accent-green);
-    }
-
-    /* Why us strip */
-    .why-strip {
-      margin-top: 2.25rem;
-      border-radius: 1.1rem;
-      padding: 1rem 1.2rem;
-      border: 1px solid #1f2937;
-      background: linear-gradient(90deg, #020617, #020617 40%, #111827 100%);
-      font-size: 0.9rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .why-strip strong {
-      color: #f9fafb;
-    }
-
-    .why-points {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .why-pill {
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid #374151;
-    }
-
-    /* Process */
-    .steps {
-      display: grid;
-      gap: 1rem;
-    }
-
-    @media (min-width: 720px) {
-      .steps {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+    // Score context
+    if (score > 0) {
+      if (score < 580) {
+        tips.push(
+          `With a score around ${score}, you’re in the “heavy rebuild” zone. Your first wins will come from deleting bad data, lowering utilization, and preventing any new late payments while you work the plan.`
+        );
+      } else if (score < 650) {
+        tips.push(
+          `A score around ${score} means you’re closer than you think. A few successful deletions and a utilization drop can move you into a much better approval tier if you stay consistent.`
+        );
+      } else {
+        tips.push(
+          `Around ${score} is not terrible at all. At this level, accurate clean-up plus disciplined utilization and a couple of solid positive tradelines can put you in a strong position for major goals.`
+        );
       }
     }
 
-    .step {
-      border-radius: 1rem;
-      padding: 1rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      font-size: 0.9rem;
+    // Question-based logic
+    if (lower.includes("car") || lower.includes("auto loan")) {
+      tips.push(
+        "Since you mentioned a car, work backward from the date you want to buy. Give yourself at least 6–12 months to clean up reports, lower utilization, and build a stable pattern of on-time payments before shopping lenders."
+      );
     }
 
-    .step-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 1.6rem;
-      height: 1.6rem;
-      border-radius: 50%;
-      background: var(--accent-blue);
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
+    if (lower.includes("house") || lower.includes("mortgage")) {
+      tips.push(
+        "For a house or mortgage goal, stability is everything. Lenders care about on-time history, stable income, and lower utilization. We want your reports as clean as possible and your last 12 months to look boring and responsible."
+      );
     }
 
-    .step-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
+    if (lower.includes("bankruptcy")) {
+      tips.push(
+        "With a bankruptcy in the picture, the focus becomes precise reporting and rebuild. Make sure included accounts are coded correctly after discharge, then add small, manageable tradelines and keep them extremely clean."
+      );
     }
 
-    .step p {
-      color: var(--text-muted);
-      font-size: 0.84rem;
+    if (lower.includes("identity theft") || lower.includes("fraud")) {
+      tips.push(
+        "For identity theft or fraud, file an identity theft report, consider a police report, and use that documentation when disputing. Lock down your reports with fraud alerts or freezes while you clean up the damage."
+      );
     }
 
-    /* Contact / Intake */
-    .contact-grid {
-      display: grid;
-      gap: 1.75rem;
+    // Generic fallback if not much else
+    if (tips.length <= 2) {
+      tips.push(
+        "Write down your snapshot on paper: collections, charge-offs, lates, repos, utilization, and your current scores. That becomes your control panel. Then hit the biggest, most obvious errors first."
+      );
+      tips.push(
+        "Your ongoing job: no new lates, lower utilization over time, and add positive tradelines you can actually afford to manage. That combination is how scores move and stay up."
+      );
     }
 
-    @media (min-width: 880px) {
-      .contact-grid {
-        grid-template-columns: minmax(0, 1.6fr) minmax(0, 2fr);
-      }
+    const html = `
+      <p><strong>Here’s a calm, AI-style game plan based on what you shared:</strong></p>
+      <ol>
+        ${tips.map((tip) => `<li>${tip}</li>`).join("")}
+      </ol>
+      <p class="ask-ai-footer">
+        This is education, not legal, tax, or investment advice. Always save copies of your reports,
+        letters, and responses — your paper trail is your protection.
+      </p>
+    `;
+
+    return html;
+  }
+
+  function handleAskClick() {
+    const question = questionInput.value || "";
+
+    if (!question.trim()) {
+      answerBox.innerHTML =
+        "<p><strong>Quick note:</strong> Type your question first so I know what you’re dealing with.</p>";
+      answerBox.classList.add("visible");
+      answerBox.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
     }
 
-    .contact-card {
-      border-radius: 1.25rem;
-      padding: 1.5rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      font-size: 0.9rem;
+    const html = buildAnswer(question);
+    answerBox.innerHTML = html;
+    answerBox.classList.add("visible");
+    answerBox.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  askButton.addEventListener("click", handleAskClick);
+
+  // Convenience: Ctrl+Enter or Cmd+Enter submits
+  questionInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      handleAskClick();
     }
+  });
+});
 
-    .contact-card h3 {
-      margin-bottom: 0.5rem;
-    }
-
-    .contact-card p {
-      margin-bottom: 0.5rem;
-      color: #d1d5db;
-    }
-
-    .contact-details {
-      font-size: 0.88rem;
-      margin-top: 0.5rem;
-    }
-
-    .contact-details div {
-      margin-bottom: 0.3rem;
-    }
-
-    .contact-details span {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-right: 0.3rem;
-    }
-
-    .contact-form {
-      display: grid;
-      gap: 0.9rem;
-      font-size: 0.9rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    input,
-    textarea {
-      padding: 0.6rem 0.75rem;
-      border-radius: 0.6rem;
-      border: 1px solid #1f2937;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--accent-blue);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    .form-helper {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 1.8rem 0 2.2rem;
-      font-size: 0.8rem;
-      color: #6b7280;
-      text-align: center;
-    }
-
-    @media (max-width: 720px) {
-      .hero {
-        padding-top: 2.5rem;
-      }
-
-      .hero-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .nav-links {
-        display: none;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="container nav">
-      <div class="logo">
-        Life Hack <span>Agency</span>
-        <span class="logo-pill">Websites & Apps</span>
-      </div>
-      <nav class="nav-links">
-        <a href="#pricing">Pricing</a>
-        <a href="#process">How It Works</a>
-        <a href="#contact">Book a Call</a>
-      </nav>
-      <a href="#contact" class="btn-outline">Free Strategy Call</a>
-    </div>
-  </header>
-
-  <main>
-    <!-- HERO --><section class="ask-ai-section">
-  <h2>Ask AI About Your Credit</h2>
-  <p>
-    Type your question in normal language and we’ll give you a calm, step-by-step style game plan.
-    No scare tactics, just straight talk.
-  </p>
-
-  <textarea
-    id="ask-ai-question"
-    rows="4"
-    placeholder="Example: I have 3 collections and high utilization. What should I fix first?"
-  ></textarea>
-
-  <button id="ask-ai-button" class="btn-primary ask-ai-button">
-    💬 Ask AI
-  </button>
-
-  <p class="ask-ai-disclaimer">
-    Educational guidance only. Not legal, tax, or investment advice.
-  </p>
-
-  <div id="ask-ai-answer" class="ask-ai-answer-box">
-    <!-- The AI-style answer will appear here -->
-  </div>
-</section>
-
-    
-   
-    <!-- CRED STRIP -->
-    <div class="cred-strip">
-      <div class="container cred-inner">
-        <div>
-          <strong>Built for real small businesses.</strong> Local, service-based, and online brands.
-        </div>
-        <div class="cred-tags">
-          <span class="cred-tag">Contractors</span>
-          <span class="cred-tag">Real Estate</span>
-          <span class="cred-tag">Credit / Finance</span>
-          <span class="cred-tag">Beauty &amp; Wellness</span>
-          <span class="cred-tag">Local Services</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- PRICING -->
-    <section id="pricing">
-      <div class="container">
-        <h2 class="section-title">Simple, Transparent Pricing</h2>
-        <p class="section-sub">
-          Pay a fraction of what big agencies charge and still get clean, professional, conversion-focused builds. 
-          Every project starts with a free phone consultation and a short intake form emailed to you.
-        </p>
-
-        <div class="pricing-grid">
-          <div class="pricing-card">
-            <div class="pricing-label">Web Package</div>
-            <div class="pricing-name">Launch Website</div>
-            <div class="pricing-price">$999.99</div>
-            <div class="pricing-note">Perfect for small businesses who need a clean, modern site fast.</div>
-            <ul class="pricing-features">
-              <li>Up to 5 custom pages (Home, About, Services, Contact, etc.)</li>
-              <li>Mobile-friendly, fast-loading design</li>
-              <li>Basic SEO setup (titles, descriptions, keywords)</li>
-              <li>Contact form &amp; call-to-action buttons</li>
-              <li>Email intake form after phone call to gather your details</li>
-            </ul>
-          </div>
-
-          <div class="pricing-card popular">
-            <div class="pricing-label">Most Popular</div>
-            <div class="pricing-name">Growth Website</div>
-            <div class="pricing-price">$1,499.99</div>
-            <div class="pricing-note">For businesses ready to look and feel like a “big player” online.</div>
-            <ul class="pricing-features">
-              <li>Up to 10 custom pages &amp; landing page layout</li>
-              <li>Enhanced SEO structure &amp; optional blog setup</li>
-              <li>Lead capture forms &amp; basic automations</li>
-              <li>Integration with your booking or calendar tools</li>
-              <li>Phone consult + emailed intake form &amp; content checklist</li>
-            </ul>
-          </div>
-
-          <div class="pricing-card">
-            <div class="pricing-label">Apps</div>
-            <div class="pricing-name">App Prototype / MVP</div>
-            <div class="pricing-price">From $2,499</div>
-            <div class="pricing-note">Bring your app idea to life with a simple, working version.</div>
-            <ul class="pricing-features">
-              <li>Discovery call to map your app idea</li>
-              <li>Clickable prototype or basic live MVP</li>
-              <li>Simple user flows &amp; core features only</li>
-              <li>Hand-off or ongoing upgrade options</li>
-              <li>All specs collected through a detailed intake form</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="why-strip">
-          <div>
-            <strong>Big agencies:</strong> $3,000–$5,000+ and months of waiting. 
-            <strong>Life Hack Agency:</strong> lean, fast, and focused on what actually makes you money.
-          </div>
-          <div class="why-points">
-            <span class="why-pill">Flat-rate pricing</span>
-            <span class="why-pill">Small-business friendly</span>
-            <span class="why-pill">Launch-ready builds</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROCESS -->
-    <section id="process">
-      <div class="container">
-        <h2 class="section-title">How the Process Works (Simple)</h2>
-        <p class="section-sub">
-          No complicated project portals or endless meetings. Just a call, a simple intake form, and then we build.
-        </p>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-title">Book a Free Call</div>
-            <p>
-              Call us or use the contact section below to request a quick over-the-phone appointment.
-              We talk through your goals and pick the right package.
-            </p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-title">Intake Form by Email</div>
-            <p>
-              After your call, we email you a simple intake form. You fill in your business details, 
-              services, colors, and any examples you like, then email it back.
-            </p>
-          </div>
-          
-<section class="ask-ai-section">
-  <h2>Ask AI About Your Credit</h2>
-  <p>Type your question in normal language and get a simple game plan in plain English.</p>
-
-  <textarea
-    id="ask-ai-question"
-    rows="4"
-    placeholder="Example: I have 3 collections and late payments. What should I do first?"
-  ></textarea>
-
-  <button id="ask-ai-button" class="btn-primary">
-    Ask AI
-  </button>
-
-  <p class="ask-ai-disclaimer">
-    Educational guidance only. Not legal, tax, or investment advice.
-  </p>
-
-  <div id="ask-ai-answer" class="ask-ai-answer-box">
-    <!-- The AI-style answer will appear here -->
-  </div>
-</section>
-
-          <div class="step">
-            <div class="step-number">3</div>
-            <div class="step-title">We Build &amp; Show You</div>
-            <p>
-              We design and build your site or app based on your intake form, then send you a preview.
-              You can request a round of clean-up edits.
-            </p>
-          </div>
-
-          <div class="step">
-            <div class="step-number">4</div>
-            <div class="step-title">Launch &amp; Handover</div>
-            <p>
-              Once you’re happy, we launch your project and hand over logins and basic instructions so you’re in control.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT / INTAKE -->
-    <section id="contact">
-      <div class="container">
-        <h2 class="section-title">Book Your Over-the-Phone Appointment</h2>
-        <p class="section-sub">
-          Fill out this quick contact section or call directly. We’ll schedule a phone appointment and then send your intake form by email. 
-          Complete it and email it back — we handle the build.
-        </p>
-
-        <div class="contact-grid">
-          <div class="contact-card">
-            <h3>Contact &amp; Location</h3>
-            <p>
-              Life Hack Agency is a small, focused studio — you always deal directly with the person building your project.
-            </p>
-            <div class="contact-details">
-              <div>
-                <span>Address</span>
-                8500 Harwood Rd, Apt 6718<br />
-                North Richland Hills, TX 76180
-              </div>
-              <div>
-                <span>Phone</span>
-                <a href="tel:+14694356294">(469) 435-6294</a>
-              </div>
-              <div>
-                <span>Email</span>
-                <a href="mailto:StaytonCoryJoseph@gmail.com">StaytonCoryJoseph@gmail.com</a>
-              </div>
-              <div>
-                <span>Service</span>
-                Websites &amp; apps for small businesses, local &amp; remote.
-              </div>
-            </div>
-          </div>
-
-          <div class="contact-card">
-            <h3>Request a Call &amp; Intake Form</h3>
-            <p>
-              This form doesn’t submit on the page yet — it’s here to show the simple info we’ll collect. 
-              You can copy/paste these questions into an email, or we can send you this as a completed intake form after your call.
-            </p>
-
-            <div class="contact-form">
-              <div class="field">
-                <label for="name">Your Name</label>
-                <input id="name" type="text" placeholder="Full name" />
-              </div>
-              <div class="field">
-                <label for="business">Business Name</label>
-                <input id="business" type="text" placeholder="What is your business called?" />
-              </div>
-              <div class="field">
-                <label for="phone">Best Phone Number</label>
-                <input id="phone" type="tel" placeholder="Where can we call you?" />
-              </div>
-              <div class="field">
-                <label for="email">Best Email</label>
-                <input id="email" type="email" placeholder="Where should we send your intake form?" />
-              </div>
-              <div class="field">
-                <label for="project">What do you need?</label>
-                <textarea id="project" placeholder="Example: 5-page website for my local business, or basic app for booking clients."></textarea>
-              </div>
-              <p class="form-helper">
-                To get started now, you can email this information directly to 
-                <a href="mailto:StaytonCoryJoseph@gmail.com">StaytonCoryJoseph@gmail.com</a> 
-                with the subject line: <strong>“Life Hack Agency Intake Form”</strong>.
-              </p>
-              <div>
-                <a
-                  href="mailto:StaytonCoryJoseph@gmail.com?subject=Life%20Hack%20Agency%20Intake%20Form"
-                  class="btn-primary"
-                >
-                  Email My Details
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    &copy; <span id="year"></span> Life Hack Agency. All rights reserved. Built for small businesses who want
-    top-tier results without top-tier prices.
-  </footer>
-
-  <script>
-    // Dynamic year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>
 
