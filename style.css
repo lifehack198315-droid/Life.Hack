@@ -736,3 +736,10 @@ a:hover {
     align-items: flex-start;
   }
 }
+.mascot {
+  width: 65px;
+  height: auto;
+  object-fit: contain;
+  margin-left: 0.4rem;
+}
+
