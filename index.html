@@ -1,198 +1,329 @@
-// script.js
-// AI-style credit assistant for Advance Credit Solution (front-end logic only)
-
-document.addEventListener("DOMContentLoaded", () => {
-  const yearSpan = document.getElementById("year");
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-
-  // Mobile nav (simple)
-  const navToggle = document.querySelector(".nav-toggle");
-  const mainNav = document.querySelector(".main-nav");
-
-  if (navToggle && mainNav) {
-    navToggle.addEventListener("click", () => {
-      const isOpen = mainNav.style.display === "flex";
-      mainNav.style.display = isOpen ? "none" : "flex";
-    });
-  }
-
-  // Ask AI logic
-  const questionInput = document.getElementById("ask-ai-question");
-  const askButton = document.getElementById("ask-ai-button");
-  const answerBox = document.getElementById("ask-ai-answer");
-
-  if (!questionInput || !askButton || !answerBox) return;
-
-  function getNumber(id) {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    const value = parseFloat(el.value);
-    return Number.isFinite(value) ? value : 0;
-  }
-
-  function buildAnswer(rawQuestion) {
-    const q = (rawQuestion || "").trim();
-    const lower = q.toLowerCase();
-
-    const collections = getNumber("snap-collections");
-    const chargeoffs = getNumber("snap-chargeoffs");
-    const lates = getNumber("snap-lates");
-    const repos = getNumber("snap-repos");
-    const utilization = getNumber("snap-utilization");
-    const score = getNumber("snap-score");
-
-    const tips = [];
-
-    // Intro
-    tips.push(
-      "First, breathe. Your credit is a situation, not a life sentence. We’re going to focus on the highest-impact moves instead of trying to fix everything at once."
-    );
-
-    // Collections logic
-    if (collections > 0) {
-      tips.push(
-        `You mentioned around ${collections} collection account(s). Start by pulling all three reports and listing each collection with name, balance, account number, and dates. Anything that looks wrong or duplicate gets disputed first under the Fair Credit Reporting Act.`
-      );
-      tips.push(
-        "Do not call collection agencies and make deals over the phone. Keep everything in writing so you have a paper trail and so you don’t restart old statutes accidentally."
-      );
-    }
-
-    // Charge-offs
-    if (chargeoffs > 0) {
-      tips.push(
-        `You have about ${chargeoffs} charge-off(s). For each one, separate the problem into two parts: (1) Is the reporting accurate? (2) Do you want to negotiate a settlement or deletion? Fix wrong data first, then talk settlement in writing only.`
-      );
-    }
-
-    // Lates
-    if (lates > 0) {
-      tips.push(
-        `You estimated roughly ${lates} late payment(s) in the last 24 months. Focus on keeping everything current going forward and look closely for any late marks that don’t match your actual pay history — those are dispute candidates.`
-      );
-      tips.push(
-        "For accurate lates, you may ask the creditor for a goodwill adjustment once you’ve built a new streak of on-time payments. It’s not guaranteed, but it works often enough to try."
-      );
-    }
-
-    // Repos / judgments
-    if (repos > 0) {
-      tips.push(
-        `Repos/judgments: you listed about ${repos}. Get copies of any contracts or court documents so you can compare what’s reported on your credit reports against what actually happened. Anything that doesn’t match the paperwork can be challenged.`
-      );
-    }
-
-    // Utilization logic
-    if (utilization > 0) {
-      if (utilization > 80) {
-        tips.push(
-          `Your utilization looks very high (around ${utilization}%). That alone can crush your score even if you never pay late. Your first rebuilding move is to create a plan to bring each card under 50%, then under 30%, and ideally into the 10–20% range.`
-        );
-      } else if (utilization > 30) {
-        tips.push(
-          `Your utilization is around ${utilization}%. Good news: this is very fixable. Aim to pay balances down below 30% per card and under about 10–15% if you’re trying to squeeze out extra points before a big purchase.`
-        );
-      } else {
-        tips.push(
-          `Your utilization (around ${utilization}%) is not the main fire. The main gains will likely come from cleaning inaccurate negatives and building positive history. Keep utilization in the low range and focus on disputes and rebuild strategy.`
-        );
-      }
-    }
-
-    // Score context
-    if (score > 0) {
-      if (score < 580) {
-        tips.push(
-          `With a score around ${score}, you’re in the “heavy rebuild” zone. Your first wins will come from deleting bad data, lowering utilization, and preventing any new late payments while you work the plan.`
-        );
-      } else if (score < 650) {
-        tips.push(
-          `A score around ${score} means you’re closer than you think. A few successful deletions and a utilization drop can move you into a much better approval tier if you stay consistent.`
-        );
-      } else {
-        tips.push(
-          `Around ${score} is not terrible at all. At this level, accurate clean-up plus disciplined utilization and a couple of solid positive tradelines can put you in a strong position for major goals.`
-        );
-      }
-    }
-
-    // Question-based logic
-    if (lower.includes("car") || lower.includes("auto loan")) {
-      tips.push(
-        "Since you mentioned a car, work backward from the date you want to buy. Give yourself at least 6–12 months to clean up reports, lower utilization, and build a stable pattern of on-time payments before shopping lenders."
-      );
-    }
-
-    if (lower.includes("house") || lower.includes("mortgage")) {
-      tips.push(
-        "For a house or mortgage goal, stability is everything. Lenders care about on-time history, stable income, and lower utilization. We want your reports as clean as possible and your last 12 months to look boring and responsible."
-      );
-    }
-
-    if (lower.includes("bankruptcy")) {
-      tips.push(
-        "With a bankruptcy in the picture, the focus becomes precise reporting and rebuild. Make sure included accounts are coded correctly after discharge, then add small, manageable tradelines and keep them extremely clean."
-      );
-    }
-
-    if (lower.includes("identity theft") || lower.includes("fraud")) {
-      tips.push(
-        "For identity theft or fraud, file an identity theft report, consider a police report, and use that documentation when disputing. Lock down your reports with fraud alerts or freezes while you clean up the damage."
-      );
-    }
-
-    // Generic fallback if not much else
-    if (tips.length <= 2) {
-      tips.push(
-        "Write down your snapshot on paper: collections, charge-offs, lates, repos, utilization, and your current scores. That becomes your control panel. Then hit the biggest, most obvious errors first."
-      );
-      tips.push(
-        "Your ongoing job: no new lates, lower utilization over time, and add positive tradelines you can actually afford to manage. That combination is how scores move and stay up."
-      );
-    }
-
-    const html = `
-      <p><strong>Here’s a calm, AI-style game plan based on what you shared:</strong></p>
-      <ol>
-        ${tips.map((tip) => `<li>${tip}</li>`).join("")}
-      </ol>
-      <p class="ask-ai-footer">
-        This is education, not legal, tax, or investment advice. Always save copies of your reports,
-        letters, and responses — your paper trail is your protection.
-      </p>
-    `;
-
-    return html;
-  }
-
-  function handleAskClick() {
-    const question = questionInput.value || "";
-
-    if (!question.trim()) {
-      answerBox.innerHTML =
-        "<p><strong>Quick note:</strong> Type your question first so I know what you’re dealing with.</p>";
-      answerBox.classList.add("visible");
-      answerBox.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
-
-    const html = buildAnswer(question);
-    answerBox.innerHTML = html;
-    answerBox.classList.add("visible");
-    answerBox.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
-  askButton.addEventListener("click", handleAskClick);
-
-  // Convenience: Ctrl+Enter or Cmd+Enter submits
-  questionInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
-      event.preventDefault();
-      handleAskClick();
-    }
-  });
-});
 
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Advance Credit Solution | AI-Driven Credit Repair</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Advance Credit Solution is an AI-inspired credit repair platform that turns your messy credit into a clear, step-by-step game plan."
+  />
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <!-- ======================= HEADER ======================= -->
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand">
+        <!-- If you have a logo PNG, put it in /assets and update src -->
+        <img src="assets/elite_logo.png" alt="Advance Credit Solution Logo" class="logo" />
+        <div class="brand-text">
+          <span class="brand-name">Advance <strong>Credit Solution</strong></span>
+          <span class="brand-tagline">
+            AI-Inspired · Real Laws · Real Strategy
+          </span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <a href="#hero">Home</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#plans">Plans</a>
+        <a href="#ask-ai">Ask AI</a>
+        <a href="#footer">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================= HERO ======================= -->
+  <main>
+    <section id="hero" class="hero">
+      <div class="container hero-layout">
+        <!-- LEFT: TEXT -->
+        <div class="hero-copy">
+          <div class="hero-eyebrow">AI-INSPIRED CREDIT REPAIR PLATFORM</div>
+          <h1 class="hero-title">
+            Turn credit chaos into a calm, <span class="accent">step-by-step game plan.</span>
+          </h1>
+          <p class="hero-subtitle">
+            Advance Credit Solution uses real consumer laws, smart systems, and AI-style logic to help you
+            clean up negative items, rebuild, and protect your credit — without guesswork.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#ask-ai" class="btn-primary">
+              💬 Ask AI About My Credit
+            </a>
+            <a href="#plans" class="btn-outline">
+              View Plans & Pricing
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <div>
+              <strong>AI-style guidance</strong><br />
+              Plain-English game plans, not legalese.
+            </div>
+            <div>
+              <strong>Law-based strategy</strong><br />
+              FCRA, FDCPA, and real statutes behind the scenes.
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: AI TERMINAL PREVIEW -->
+        <aside class="hero-terminal">
+          <div class="hero-terminal-header">
+            <div class="hero-terminal-dots">
+              <span class="hero-terminal-dot"></span>
+              <span class="hero-terminal-dot"></span>
+              <span class="hero-terminal-dot"></span>
+            </div>
+            <span class="hero-terminal-title">ai_credit_assistant.js</span>
+          </div>
+          <div class="hero-terminal-body">
+            <div class="hero-terminal-line">
+              <span class="hero-terminal-label">user:</span> "I have 3 collections and high utilization."
+            </div>
+            <div class="hero-terminal-line">
+              <span class="hero-terminal-label">ai:</span> "Step 1: Breathe. Then we’ll handle collections and
+              utilization in the right order."
+            </div>
+            <div class="hero-terminal-line">
+              <span class="hero-terminal-label">ai:</span> "Let’s build your game plan..."
+              <span class="hero-terminal-cursor"></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======================= HOW IT WORKS ======================= -->
+    <section id="how-it-works" class="section">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-kicker">HOW IT WORKS</p>
+          <h2 class="section-title">AI-style logic, real human results.</h2>
+          <p class="section-subtitle">
+            We’re not guessing. We’re using repeatable systems, actual laws, and smart decision-making to
+            handle your credit the right way, in the right order.
+          </p>
+        </header>
+
+        <div class="features-grid">
+          <article class="feature-card">
+            <p class="feature-label">Step 1</p>
+            <h3 class="feature-title">Snapshot & Story</h3>
+            <p class="feature-text">
+              You tell us your situation: collections, charge-offs, lates, repos, utilization.
+              Our AI-style assistant helps you organize the mess into a clear snapshot.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <p class="feature-label">Step 2</p>
+            <h3 class="feature-title">Law-Based Game Plan</h3>
+            <p class="feature-text">
+              We prioritize what to attack first based on impact and leverage —
+              inaccurate data, obsolete accounts, and violations of the Fair Credit Reporting Act.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <p class="feature-label">Step 3</p>
+            <h3 class="feature-title">Rebuild & Protect</h3>
+            <p class="feature-text">
+              Once the heavy negatives are handled, we focus on rebuilding:
+              utilization, positive trade lines, and a long-term strategy that actually sticks.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= PLANS ======================= -->
+    <section id="plans" class="section section--tight">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-kicker">PLANS & PRICING</p>
+          <h2 class="section-title">Real work. No mystery.</h2>
+          <p class="section-subtitle">
+            Choose a plan that fits your situation. Every option comes with AI-style guidance and
+            human-backed strategy.
+          </p>
+        </header>
+
+        <div class="plans-grid">
+          <article class="plan-card">
+            <h3 class="plan-name">Snapshot Starter</h3>
+            <p class="plan-price">$99</p>
+            <p class="plan-tagline">One-time deep dive into your situation.</p>
+            <ul class="plan-list">
+              <li>Full credit snapshot breakdown</li>
+              <li>AI-style written game plan</li>
+              <li>Priority list of what to fix first</li>
+            </ul>
+            <button class="btn-outline plan-btn">Get My Snapshot</button>
+          </article>
+
+          <article class="plan-card plan-card--highlight">
+            <h3 class="plan-name">Active Repair</h3>
+            <p class="plan-price">$149 / mo</p>
+            <p class="plan-tagline">Ongoing disputes + strategy.</p>
+            <ul class="plan-list">
+              <li>Monthly dispute rounds</li>
+              <li>AI-style updates + guidance</li>
+              <li>Rebuild strategy once negatives drop</li>
+            </ul>
+            <button class="btn-primary plan-btn">Start Active Repair</button>
+          </article>
+
+          <article class="plan-card">
+            <h3 class="plan-name">Family & Bundle</h3>
+            <p class="plan-price">From $249 / mo</p>
+            <p class="plan-tagline">Multiple files, one game plan.</p>
+            <ul class="plan-list">
+              <li>Spouse or family member included</li>
+              <li>Coordinated strategy for everyone</li>
+              <li>Discounted bundled pricing</li>
+            </ul>
+            <button class="btn-outline plan-btn">Talk About Bundles</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= SNAPSHOT + ASK AI ======================= -->
+    <section id="ask-ai" class="section section--tight">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-kicker">AI-STYLE GUIDANCE</p>
+          <h2 class="section-title">Give us your mess. Get back a calm plan.</h2>
+          <p class="section-subtitle">
+            Fill in a quick snapshot, ask your question like you would text a friend, and let the AI-style engine
+            give you a clean, step-by-step starting point.
+          </p>
+        </header>
+
+        <div class="snapshot-grid-wrap">
+          <!-- Snapshot Inputs -->
+          <div class="snapshot-card">
+            <h3 class="snapshot-title">Your Credit Snapshot</h3>
+            <p class="snapshot-text">
+              You don’t need to be perfect. Just estimate. This helps the AI-style logic speak directly to your situation.
+            </p>
+
+            <div class="snapshot-grid">
+              <label>
+                # of Collections
+                <input type="number" id="snap-collections" min="0" />
+              </label>
+
+              <label>
+                # of Charge-offs
+                <input type="number" id="snap-chargeoffs" min="0" />
+              </label>
+
+              <label>
+                Late Payments (last 24 months)
+                <input type="number" id="snap-lates" min="0" />
+              </label>
+
+              <label>
+                Repos / Judgments
+                <input type="number" id="snap-repos" min="0" />
+              </label>
+
+              <label>
+                Utilization %
+                <input type="number" id="snap-utilization" min="0" max="100" />
+              </label>
+
+              <label>
+                Current Score (estimate)
+                <input type="number" id="snap-score" min="300" max="850" />
+              </label>
+            </div>
+
+            <p class="snapshot-note">
+              Just rough numbers are fine. The goal is direction, not perfection.
+            </p>
+          </div>
+
+          <!-- Ask AI Panel -->
+          <div class="ask-ai-section-card">
+            <h3 class="snapshot-title">Ask AI About Your Credit</h3>
+            <p class="snapshot-text">
+              Type your question in normal language. We’ll layer it with your snapshot and give you a calm,
+              prioritized game plan.
+            </p>
+
+            <textarea
+              id="ask-ai-question"
+              rows="5"
+              placeholder="Example: I have 3 collections, high utilization, and a repo. What should I fix first if I want to buy a car in 12 months?"
+            ></textarea>
+
+            <button id="ask-ai-button" class="btn-primary ask-ai-button">
+              💬 Generate My Game Plan
+            </button>
+
+            <p class="ask-ai-disclaimer">
+              Educational guidance only. Not legal, tax, or investment advice.
+            </p>
+
+            <div id="ask-ai-answer" class="ask-ai-answer-box">
+              <!-- AI-style answer appears here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer id="footer" class="site-footer">
+    <div class="container footer-layout">
+      <div class="footer-main">
+        <h3 class="footer-brand">Advance Credit Solution</h3>
+        <p class="footer-text">
+          AI-inspired, law-backed credit strategies. We help you move from “overwhelmed and stuck”
+          to “organized and in control,” one step at a time.
+        </p>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#plans">Plans</a>
+          <a href="#ask-ai">Ask AI</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <p>Email: support@advancecreditsolution.com</p>
+          <p>Hours: Mon–Fri, 9am–6pm</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <span>© <span id="year"></span> Advance Credit Solution. All rights reserved.</span>
+        <span class="footer-legal">
+          Educational content only. Not legal, tax, or investment advice.
+        </span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
